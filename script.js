@@ -63,6 +63,8 @@ const getMovieInfo = async (movie) => {
   }
 };
 
+let currentMovie = [];
+
 // Gets a list of movies and ultimately displays the info of a random movie from the list
 const showRandomMovie = async () => {
   const movieInfo = document.getElementById("movieInfo");
@@ -74,8 +76,43 @@ const showRandomMovie = async () => {
   const randomMovie = getRandomMovie(movies);
   const info = await getMovieInfo(randomMovie);
   // console.log(info);
-  displayMovie(info);
+  currentMovie.push(info);
+  console.log( `Current Movie: ${currentMovie[0].title}`);
+  if (moviePoster.childNodes.length == 0) {
+    displayMovie(info);
+  }
+  console.log(`Info: ${info.title}`);
+  // return info;
+};
+
+
+
+const displayLikedMovie = async (movieInfo) => {
+  const movieList = document.getElementById("listLikedMovies");
+  const li = document.createElement("li");
+  const h3 = document.createElement("h3");
+  const a = document.createElement("a");
+  const img = document.createElement("img");
+
+  // const movieInfo = await showRandomMovie();
+  // console.log(`movieInfo: ${movieInfo}`);
+
+  h3.setAttribute("id", "likedMovieTitle");
+  h3.innerHTML = movieInfo.title;
+
+  a.setAttribute("target", "_blank");
+  a.setAttribute("href", `http://www.imdb.com/title/${movieInfo.imdb_id}/`);
+
+  img.setAttribute("id", "likedMoviePoster");
+  img.setAttribute(
+    "src",
+    `https://image.tmdb.org/t/p/w500${movieInfo.poster_path}`
+  );
+
+  movieList.appendChild(li).appendChild(a).appendChild(img);
+  li.appendChild(h3);
 };
 
 getGenres().then(populateGenreDropdown);
+
 playBtn.onclick = showRandomMovie;

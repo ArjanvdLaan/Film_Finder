@@ -31,15 +31,18 @@ const clearCurrentMovie = () => {
 };
 
 // After liking a movie, clears the current movie from the screen and gets another random movie
-const likeMovie = () => {
+const likeMovie = async () => {
+  displayLikedMovie(currentMovie[0]);
   clearCurrentMovie();
   showRandomMovie();
+  currentMovie.pop();
 };
 
 // After disliking a movie, clears the current movie from the screen and gets another random movie
 const dislikeMovie = () => {
   clearCurrentMovie();
   showRandomMovie();
+  currentMovie.pop();
 };
 
 // Uses the DOM to create HTML to display the movie
@@ -59,6 +62,7 @@ const displayMovie = (movieInfo) => {
   const voteAverage = createMovieVoteAverage(movieInfo.vote_average);
   const releaseDate = createMovieReleaseDate(movieInfo.release_date);
 
+  console.log('movieInfogenre: ' + movieInfo.id);
   // Append title, poster, popularity, and overview to page
   moviePosterDiv.appendChild(moviePoster);
   movieTextDiv.appendChild(titleHeader);
@@ -74,7 +78,7 @@ const displayMovie = (movieInfo) => {
 // Create HTML for movie poster
 const createMoviePoster = (posterPath, imdb_id) => {
   const moviePosterUrl = `https://image.tmdb.org/t/p/original/${posterPath}`;
-  console.log(`check: ${posterPath}`);
+  console.log(`posterURL: ${posterPath}`);
 
   const posterImg = document.createElement("img");
   posterImg.setAttribute("src", moviePosterUrl);
